@@ -7,7 +7,6 @@ from langchain_core.tools import tool
 from langgraph.constants import START, END
 from langgraph.graph import StateGraph
 
-from agent import get_response_or_raise
 from agent.llm import LLM
 from json_parser import JSONParser
 
@@ -121,6 +120,6 @@ class Workflow:
 
         if 'messages' in result:
             messages = result['messages']
-            return messages[0]
+            return messages[-1]
 
         raise ValueError("failed to generate response")
