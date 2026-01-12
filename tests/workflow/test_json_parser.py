@@ -1,8 +1,8 @@
 import json
 import pytest
 from hypothesis import given, strategies as st
-from src.workflow_management.json_parser import JSONParser
-from src.workflow_management.exceptions import ParseError
+from workflow.json_parser import JSONParser
+from workflow.json_parser import ParseError
 
 class TestJSONParser:
 

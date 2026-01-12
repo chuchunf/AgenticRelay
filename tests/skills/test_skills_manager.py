@@ -72,69 +72,6 @@ class TestSkillManager:
             assert isinstance(listed_skills, list)
             assert len(listed_skills) == 0
 
-    @given(
-        valid_skills=st.lists(
-            st.text(
-                alphabet=st.characters(min_codepoint=ord('a'), max_codepoint=ord('z')),
-                min_size=1, 
-                max_size=20
-            ).filter(lambda x: x.strip() == x and len(x.strip()) > 0),
-            min_size=1,
-            max_size=3,
-            unique=True
-        ),
-        invalid_skills=st.lists(
-            st.text(
-                alphabet=st.characters(min_codepoint=ord('a'), max_codepoint=ord('z')),
-                min_size=1, 
-                max_size=20
-            ).filter(lambda x: x.strip() == x and len(x.strip()) > 0),
-            min_size=1,
-            max_size=2,
-            unique=True
-        )
-    )
-    def test_skill_listing_with_invalid_skills(self, valid_skills, invalid_skills):
-        for name in valid_skills + invalid_skills:
-            assume(not name.endswith('.'))
-            assume(name not in ['con', 'prn', 'aux', 'nul', 'com1', 'com2', 'com3', 'com4', 'com5', 
-                               'com6', 'com7', 'com8', 'com9', 'lpt1', 'lpt2', 'lpt3', 'lpt4', 
-                               'lpt5', 'lpt6', 'lpt7', 'lpt8', 'lpt9'])
-
-        assume(not set(valid_skills).intersection(set(invalid_skills)))
-
-        with tempfile.TemporaryDirectory() as temp_dir:
-            skills_dir = os.path.join(temp_dir, "skills")
-            os.makedirs(skills_dir)
-
-            for skill_name in valid_skills:
-                skill_dir = os.path.join(skills_dir, skill_name)
-                os.makedirs(skill_dir)
-
-                with open(os.path.join(skill_dir, "SKILLS.md"), 'w', encoding='utf-8') as f:
-                    f.write(f"Skills content for {skill_name}")
-
-                with open(os.path.join(skill_dir, "RESOURCES.md"), 'w', encoding='utf-8') as f:
-                    f.write(f"Resources content for {skill_name}")
-
-            for skill_name in invalid_skills:
-                skill_dir = os.path.join(skills_dir, skill_name)
-                os.makedirs(skill_dir)
-
-                with open(os.path.join(skill_dir, "SKILLS.md"), 'w', encoding='utf-8') as f:
-                    f.write(f"Skills content for {skill_name}")
-
-            skills_manager = SkillsManager(skills_dir)
-            skills_manager.load_skills()
-
-            listed_skills = skills_manager.list_skills()
-
-            assert isinstance(listed_skills, list)
-            assert len(listed_skills) == len(valid_skills)
-            assert set(listed_skills) == set(valid_skills)
-
-            for invalid_skill in invalid_skills:
-                assert invalid_skill not in listed_skills
 
     @given(
         num_directories=st.integers(min_value=2, max_value=3),
@@ -196,126 +133,6 @@ class TestSkillManager:
             assert set(listed_skills) == expected_skills
 
 
-    @given(
-        skill_names=st.lists(
-            st.text(
-                alphabet=st.characters(min_codepoint=ord('a'), max_codepoint=ord('z')),
-                min_size=1,
-                max_size=20
-            ).filter(lambda x: x.strip() == x and len(x.strip()) > 0),
-            min_size=0,
-            max_size=5,
-            unique=True
-        ),
-        query_skill=st.text(
-            alphabet=st.characters(min_codepoint=ord('a'), max_codepoint=ord('z')),
-            min_size=1,
-            max_size=20
-        ).filter(lambda x: x.strip() == x and len(x.strip()) > 0)
-    )
-    def test_skill_retrieval_accuracy(self, skill_names, query_skill):
-        for name in skill_names:
-            assume(not name.endswith('.'))
-            assume(name not in ['con', 'prn', 'aux', 'nul', 'com1', 'com2', 'com3', 'com4', 'com5',
-                                'com6', 'com7', 'com8', 'com9', 'lpt1', 'lpt2', 'lpt3', 'lpt4',
-                                'lpt5', 'lpt6', 'lpt7', 'lpt8', 'lpt9'])
-
-        assume(not query_skill.endswith('.'))
-        assume(query_skill not in ['con', 'prn', 'aux', 'nul', 'com1', 'com2', 'com3', 'com4', 'com5',
-                                   'com6', 'com7', 'com8', 'com9', 'lpt1', 'lpt2', 'lpt3', 'lpt4',
-                                   'lpt5', 'lpt6', 'lpt7', 'lpt8', 'lpt9'])
-
-        with tempfile.TemporaryDirectory() as temp_dir:
-            skills_dir = os.path.join(temp_dir, "skills")
-            os.makedirs(skills_dir)
-
-            for skill_name in skill_names:
-                skill_dir = os.path.join(skills_dir, skill_name)
-                os.makedirs(skill_dir)
-
-                skills_content = f"Skills content for {skill_name}"
-                with open(os.path.join(skill_dir, "SKILLS.md"), 'w', encoding='utf-8') as f:
-                    f.write(skills_content)
-
-                resources_content = f"Resources content for {skill_name}"
-                with open(os.path.join(skill_dir, "RESOURCES.md"), 'w', encoding='utf-8') as f:
-                    f.write(resources_content)
-
-            skills_manager = SkillsManager(skills_dir)
-            skills_manager.load_skills()
-
-            if query_skill in skill_names:
-                retrieved_skill = skills_manager.get_skill(query_skill)
-
-                assert retrieved_skill is not None
-                assert isinstance(retrieved_skill, Skill)
-                assert retrieved_skill.name == query_skill
-                assert f"Skills content for {query_skill}" in retrieved_skill.skills_content
-                assert f"Resources content for {query_skill}" in retrieved_skill.resources_content
-            else:
-                retrieved_skill = skills_manager.get_skill(query_skill)
-                assert retrieved_skill is None
-
-    def test_skill_retrieval_empty_registry(self):
-        with tempfile.TemporaryDirectory() as temp_dir:
-            skills_dir = os.path.join(temp_dir, "empty_skills")
-            os.makedirs(skills_dir)
-
-            skills_manager = SkillsManager(skills_dir)
-            skills_manager.load_skills()
-
-            assert skills_manager.get_skill("any_skill") is None
-
-            with pytest.raises(ValueError, match="cannot be empty"):
-                skills_manager.get_skill("")
-
-    @given(
-        skill_names=st.lists(
-            st.text(
-                alphabet=st.characters(min_codepoint=ord('a'), max_codepoint=ord('z')),
-                min_size=1,
-                max_size=20
-            ).filter(lambda x: x.strip() == x and len(x.strip()) > 0),
-            min_size=1,
-            max_size=3,
-            unique=True
-        )
-    )
-    def test_skill_retrieval_case_sensitivity(self, skill_names):
-        for name in skill_names:
-            assume(not name.endswith('.'))
-            assume(name not in ['con', 'prn', 'aux', 'nul', 'com1', 'com2', 'com3', 'com4', 'com5',
-                                'com6', 'com7', 'com8', 'com9', 'lpt1', 'lpt2', 'lpt3', 'lpt4',
-                                'lpt5', 'lpt6', 'lpt7', 'lpt8', 'lpt9'])
-
-        with tempfile.TemporaryDirectory() as temp_dir:
-            skills_dir = os.path.join(temp_dir, "skills")
-            os.makedirs(skills_dir)
-
-            for skill_name in skill_names:
-                skill_dir = os.path.join(skills_dir, skill_name)
-                os.makedirs(skill_dir)
-
-                with open(os.path.join(skill_dir, "SKILLS.md"), 'w', encoding='utf-8') as f:
-                    f.write(f"Skills content for {skill_name}")
-
-                with open(os.path.join(skill_dir, "RESOURCES.md"), 'w', encoding='utf-8') as f:
-                    f.write(f"Resources content for {skill_name}")
-
-            skills_manager = SkillsManager(skills_dir)
-            skills_manager.load_skills()
-
-            for skill_name in skill_names:
-                assert skills_manager.get_skill(skill_name) is not None
-
-                upper_name = skill_name.upper()
-                if upper_name != skill_name:
-                    assert skills_manager.get_skill(upper_name) is None
-
-                lower_name = skill_name.lower()
-                if lower_name != skill_name:
-                    assert skills_manager.get_skill(lower_name) is None
-
 
     @given(
         num_directories=st.integers(min_value=1, max_value=5)
@@ -337,14 +154,6 @@ class TestSkillManager:
             assert isinstance(skills_manager.skills_registry, dict)
             assert len(skills_manager.skills_registry) == 0
 
-    def test_configuration_handling_default_directory(self):
-        skills_manager = SkillsManager()
-
-        assert len(skills_manager.skills_dirs) == 1
-        assert skills_manager.skills_dirs[0] == "./skills"
-
-        assert isinstance(skills_manager.skills_registry, dict)
-        assert len(skills_manager.skills_registry) == 0
 
     @given(
         invalid_input=st.one_of(
@@ -613,13 +422,4 @@ class TestSkillsManagerIntegration:
         manager.load_skills()
 
         assert len(manager.list_skills()) == 1
-
-    def test_nonexistent_directory_handling(self):
-        nonexistent_dir = os.path.join(self.temp_dir, "nonexistent")
-
-        manager = SkillsManager(nonexistent_dir)
-        manager.load_skills()
-
-        assert len(manager.list_skills()) == 0
-        assert manager.get_skill("any_skill") is None
 

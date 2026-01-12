@@ -12,4 +12,4 @@ starlette~=0.50.0
 langchain-core~=1.2.6
 typing_extensions~=4.15.0
 requests~=2.32.5
- hypothesis>=6.150.1
+hypothesis>=6.150.1

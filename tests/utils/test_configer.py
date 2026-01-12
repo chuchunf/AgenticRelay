@@ -5,7 +5,7 @@ import hypothesis.strategies as st
 import pytest
 from hypothesis import given, settings
 
-from src.utilities.configuration_manager import Configer
+from utils.configer import Configer
 
 
 class TestCommonUtilitiesConfigurationManager:
@@ -180,7 +180,7 @@ class TestCommonUtilitiesConfigurationManager:
 
         with patch("pathlib.Path.exists", return_value=True), \
                 patch("builtins.open", mock_open(read_data=env_content)), \
-                patch("src.utilities.configuration_manager.load_dotenv") as mock_load_dotenv:
+                patch("utils.configer.load_dotenv") as mock_load_dotenv:
 
             config_manager = Configer()
 
