@@ -34,10 +34,10 @@ The project includes integration tests that verify real connectivity with extern
 ### Setup for Integration Tests
 
 1. Configure your LLM API key in `.env`:
-   ```
+```
 GOOGLE_API_KEY=[Gemini API Key]
 GOOGLE_MODEL_NAME=gemini-3-flash-preview
-   ```
+```
 
 2. Run integration tests:
    ```bash
