@@ -1,6 +1,6 @@
 # Relay
 
-A proof-of-concept project exploring the use of LLM to generate workflows from SOPs, validate and approve workflows, and execute them as LangGraph applications.
+A proof-of-concept project to explore using LLMs to generate workflows from SOPs, and execute them as LangGraph applications.
 
 ## Setup
 
@@ -35,8 +35,8 @@ The project includes integration tests that verify real connectivity with extern
 
 1. Configure your LLM API key in `.env`:
    ```
-   OPENAI_API_KEY=your_actual_api_key_here
-   # or other LLM provider keys
+GOOGLE_API_KEY=[Gemini API Key]
+GOOGLE_MODEL_NAME=gemini-3-flash-preview
    ```
 
 2. Run integration tests:
@@ -45,25 +45,10 @@ The project includes integration tests that verify real connectivity with extern
    pytest tests_integration/ -v
    
    # Or use the helper script
-   python tests_integration/run_with_api_key.py
+   python tests_integration/test_llm_integration.py
    ```
 
-**Note**: Integration tests will be automatically skipped if no API key is configured.
 
-## Project Structure
-
-```
-src/
-├── utilities/               # Shared utilities and LLM integration
-│   ├── llm_client.py       # Generic LangChain LLM client
-│   ├── configuration_manager.py
-│   └── logger.py
-├── sop_processing/         # SOP to workflow conversion
-├── workflow_management/    # Workflow validation and management
-├── workflow_execution/     # LangGraph workflow execution
-└── skills/                 # Skill management system
-tests/                     # Unit and integration tests
-```
 
 ## License
 
