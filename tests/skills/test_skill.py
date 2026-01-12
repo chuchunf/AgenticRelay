@@ -1,6 +1,6 @@
 from hypothesis import given, strategies as st
 
-from src.skills.skill import Skill
+from skills.skill import Skill
 
 
 class TestSkill:

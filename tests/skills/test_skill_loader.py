@@ -3,8 +3,7 @@ import tempfile
 
 from hypothesis import given, strategies as st, assume
 
-from src.skills.skill import Skill
-from src.skills.skills_loader import SkillsLoader
+from skills.skills_loader import SkillsLoader
 
 
 class TestSkillLoader:
