@@ -37,4 +37,5 @@ class TestWorkflowIntegration:
         """,
                                   "SGD-USD")
 
+        print(f"{result}")
         assert result

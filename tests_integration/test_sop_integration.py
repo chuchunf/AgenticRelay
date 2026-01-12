@@ -29,5 +29,5 @@ Selection: Select the highest value (for conversion profit) or lowest value (for
 Error Handling: If one source fails, return the available rate as the fallback.       
         """)
 
-        assert result
         print(f"{result}")
+        assert result
