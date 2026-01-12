@@ -87,7 +87,7 @@ class Workflow:
                 }
             )
 
-            return get_response_or_raise(result)
+            return {"messages": [result]}
 
         return do_step
 
