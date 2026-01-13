@@ -4,8 +4,8 @@ from langchain_core.messages import AnyMessage, HumanMessage
 from langgraph.constants import START, END
 from langgraph.graph import StateGraph
 
-from agent import get_response_or_raise
-from agent.llm import LLM
+from relay.agent import get_response_or_raise
+from relay.agent.llm import LLM
 
 
 class SOPState(TypedDict):

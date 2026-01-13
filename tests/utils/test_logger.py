@@ -4,7 +4,7 @@ import os
 import tempfile
 from unittest.mock import patch
 
-from src.utils.logger import Logger, JSONFormatter
+from relay.utils.logger import Logger, JSONFormatter
 
 
 class TestLogger:

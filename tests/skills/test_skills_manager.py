@@ -6,7 +6,7 @@ from unittest.mock import patch
 import pytest
 from hypothesis import given, strategies as st, assume
 
-from skills.skills_manager import SkillsManager, ConfigurationError
+from relay.skills.skills_manager import SkillsManager, ConfigurationError
 
 
 class TestSkillManager:

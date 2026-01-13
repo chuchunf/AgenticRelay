@@ -1,6 +1,6 @@
-from agent.sop import SOP
-
 from langchain_core.globals import set_debug, set_verbose
+
+from relay.agent.sop import SOP
 
 set_verbose(True)
 set_debug(True)

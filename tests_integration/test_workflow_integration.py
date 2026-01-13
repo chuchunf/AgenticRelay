@@ -1,6 +1,6 @@
-from agent.workflow import Workflow
-
 from langchain_core.globals import set_debug, set_verbose
+
+from relay.agent.workflow import Workflow
 
 set_verbose(True)
 set_debug(True)

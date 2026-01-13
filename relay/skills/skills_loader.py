@@ -1,8 +1,8 @@
 import os
 from typing import Optional
 
-from skill import Skill
-from utils.logger import Logger
+from relay.skills.skill import Skill
+from relay.utils.logger import Logger
 
 
 class SkillsLoader:

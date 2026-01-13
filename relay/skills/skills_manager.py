@@ -1,9 +1,9 @@
 import os
 from typing import Dict, List, Optional, Union
 
-from logger import Logger
-from skill import Skill
-from skills_loader import SkillsLoader
+from relay.utils.logger import Logger
+from relay.skills.skill import Skill
+from relay.skills.skills_loader import SkillsLoader
 
 
 class ConfigurationError(Exception):

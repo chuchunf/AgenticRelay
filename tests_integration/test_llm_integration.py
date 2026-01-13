@@ -1,6 +1,11 @@
 import uuid
 
-from agent.llm import LLM
+from langchain_core.globals import set_debug, set_verbose
+
+from relay.agent.llm import LLM
+
+set_verbose(True)
+set_debug(True)
 
 class TestLLMIntegration:
 

@@ -7,8 +7,8 @@ from langchain_core.tools import tool
 from langgraph.constants import START, END
 from langgraph.graph import StateGraph
 
-from agent.llm import LLM
-from json_parser import JSONParser
+from relay.agent.llm import LLM
+from relay.workflow.json_parser import JSONParser
 
 
 class WorkflowState(TypedDict):

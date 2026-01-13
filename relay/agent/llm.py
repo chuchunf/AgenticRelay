@@ -6,9 +6,9 @@ from langchain_core.messages import SystemMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langgraph.checkpoint.memory import InMemorySaver
 
-from configer import Configer
-from logger import Logger
-from skills import SkillsManager
+from relay.utils.configer import Configer
+from relay.utils.logger import Logger
+from relay.skills.skills_manager import SkillsManager
 
 
 class LLM:

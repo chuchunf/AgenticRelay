@@ -1,8 +1,11 @@
 import json
+
 import pytest
 from hypothesis import given, strategies as st
-from workflow.json_parser import JSONParser
-from workflow.json_parser import ParseError
+
+from relay.workflow.json_parser import JSONParser
+from relay.workflow.json_parser import ParseError
+
 
 class TestJSONParser:
 
