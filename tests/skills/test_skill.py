@@ -1,6 +1,6 @@
 from hypothesis import given, strategies as st
 
-from skills.skill import Skill
+from relay.skills.skill import Skill
 
 
 class TestSkill:
