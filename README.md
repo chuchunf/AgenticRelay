@@ -1,4 +1,4 @@
-# Relay  
+# Relay ![main status](https://github.com/chuchunf/AgenticRelay/actions/workflows/tests.yml/badge.svg) [![codecov](https://codecov.io/github/chuchunf/AgenticRelay/graph/badge.svg?token=EJKL0WYOR9)](https://codecov.io/github/chuchunf/AgenticRelay)
 
 A proof-of-concept project to explore using LLMs to generate workflows from SOPs, and execute them as LangGraph applications.
 
