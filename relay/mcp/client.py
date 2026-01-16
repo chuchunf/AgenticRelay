@@ -1,4 +1,4 @@
-from typing import List, Callable
+from typing import List, Callable, Dict
 import httpx
 from langchain_core.tools import tool as langchain_tool
 
@@ -19,7 +19,7 @@ class MCPClient:
         """
         self.server_url = server_url
         self.client = httpx.Client(timeout=30.0)
-        self._tools = []
+        self._tools = {}  # Changed to dict for key-value storage
         self._message_id = 0
         
         # Discover and wrap tools
@@ -84,7 +84,7 @@ class MCPClient:
                     tool_description = tool_info.get("description", "")
                     
                     langchain_tool_wrapper = self._create_langchain_tool(tool_name, tool_description)
-                    self._tools.append(langchain_tool_wrapper)
+                    self._tools[tool_name] = langchain_tool_wrapper
             else:
                 # Fallback: create a default compare tool if server doesn't respond
                 print("Note: Using fallback tool creation")
@@ -123,7 +123,7 @@ class MCPClient:
                 except:
                     return f"Error: {e}"
         
-        self._tools.append(compare)
+        self._tools["compare"] = compare
     
     def _create_langchain_tool(self, tool_name: str, tool_description: str):
         """
@@ -165,7 +165,31 @@ class MCPClient:
         Returns:
             List of LangChain tool functions
         """
-        return self._tools
+        return list(self._tools.values())
+    
+    def get_tool(self, tool_name: str) -> Callable:
+        """
+        Get a specific tool by name.
+        
+        Args:
+            tool_name: Name of the tool to retrieve
+            
+        Returns:
+            The LangChain tool function
+            
+        Raises:
+            KeyError: If tool not found
+        """
+        return self._tools[tool_name]
+    
+    def get_tool_names(self) -> List[str]:
+        """
+        Get list of available tool names.
+        
+        Returns:
+            List of tool names
+        """
+        return list(self._tools.keys())
     
     def close(self):
         """Close the HTTP client."""
