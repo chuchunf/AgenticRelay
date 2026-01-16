@@ -13,3 +13,4 @@ langchain-core~=1.2.6
 typing_extensions~=4.15.0
 requests~=2.32.5
 hypothesis>=6.150.1
+fastmcp>=0.1.0
