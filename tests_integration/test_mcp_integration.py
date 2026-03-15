@@ -59,7 +59,6 @@ class TestMCPClientIntegration:
         with MCPClient(server_url="http://localhost:8000") as client:
             compare_tool = client.get_tool("compare")
             
-            # Test cases
             test_cases = [
                 ({"num1": "10", "num2": "5"}, "10"),
                 ({"num1": "3.14", "num2": "2.71"}, "3.14"),
